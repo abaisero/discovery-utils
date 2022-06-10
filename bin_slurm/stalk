@@ -1,0 +1,29 @@
+#!/bin/bash
+# aggregates discovery resource usage for all users
+
+# custom format header
+# custom format entries
+# | remove header
+# | accumulate CPUs
+# | sort by CPU usage
+# | insert NL placeholder for subsequent right-alignment
+# | tabulate
+# | right-alignment of numeric fields
+# | insert empty lines
+(
+  command squeue -r -o "%P %T %u %C; JOBS; CPUS/JOBS;" | head -n +1
+  command squeue -r -o "%P %T %u %C" -S PTu \
+    | tail -n +2 \
+    | sort -k 1,1 -k 2,2 -k 3,3 \
+    | awk '{k=$1" "$2" "$3; v=$4;}
+           NR==1 {key=k; value=v; tot=1}
+           NR>1 {if(key==k) {value+=v; tot+=1} else {printf("%s %d; %d; %.1f;\n",key,value,tot,value/tot); key=k; value=v; tot=1}}
+           END {printf("%s %d; %d; %.1f;\n",key,value,tot,value/tot);}' \
+    | sort -k 1,1 -k 2,2 -k 4,4n
+) \
+  | sed 's/$/ NL/' \
+  | column -t \
+  | sed -E -e "s/([^ ]+);([ ]*)/\2\1 /g" -e "s/ NL//" \
+  | awk '{k=$1" "$2;}
+         NR==1 {key=k; print $0;}
+         NR>1 {if(key!=k) {print ""; key=k;} print $0;}'

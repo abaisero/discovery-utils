@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# custom format
+# | tabulation
+command sacct -o 'JobID,JobName,CPUTime,Elapsed,State,NCPUS' -P $@ \
+  | column -t -s \|
