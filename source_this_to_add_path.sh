@@ -1,6 +1,6 @@
 #!/bin/bash
 
-filepath=$(readlink -f "${BASH_SOURCE[@]}")
+filepath=$(readlink -f "${BASH_SOURCE:-$0}")
 dirpath=$(dirname $filepath)
 
 export PATH="$dirpath/bin_slurm:$PATH"
