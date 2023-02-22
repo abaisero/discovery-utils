@@ -1,21 +1,21 @@
 #!/bin/bash
 
-taskid=$1
+task_id=$1
 shift
 command="$@"
 
-# 1. touch a taskfile indicating the task has begun
+# 1. touch a task_file indicating the task has begun
 # 2. run the command
-# 3. if the command succeeds, touch a taskfile indicating the task is done
+# 3. if the command succeeds, touch a task_file indicating the task is done
 
-taskfile_base="taskfiles/$taskid"
-mkdir -p $(dirname $taskfile_base)
+task_file_base="task_files/$task_id"
+mkdir -p $(dirname $task_file_base)
 
-touch "$taskfile_base.BEGUN"
+touch "$task_file_base.BEGUN"
 $command
 
 if [ $? -eq 0 ]; then
-  touch "$taskfile_base.DONE"
+  touch "$task_file_base.DONE"
 fi
 
-exit 0
+exit

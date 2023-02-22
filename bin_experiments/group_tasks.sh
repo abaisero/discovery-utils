@@ -10,10 +10,10 @@ sbatch_args=("$@")
 num_tasks_per_job_minus_1=$(($num_tasks_per_job - 1))
 timestamp=$(date +%F.%T.%N)
 
-# get jobname if possible
-jobname=no-jobname
+# get job_name if possible
+job_name=no-job-name
 if echo "${sbatch_args[@]}" | grep -q -- --job-name; then
-  jobname=$(echo "${sbatch_args[@]}" | sed -E 's/^.*--job-name (\w+).*$/\1/')
+  job_name=$(echo "${sbatch_args[@]}" | sed -E 's/^.*--job-name (\w+).*$/\1/')
 fi
 
 # split standard input into chunks
@@ -35,16 +35,16 @@ while true; do
 
     done
     } | {
-    # save chunk of tasks into a jobfile
+    # save chunk of tasks into a job_file
     job_label="job=$(printf "%03d" $job_idx)"
-    jobfile="jobfiles/jobfile.$timestamp.$jobname.$job_label.txt"
-    mkdir -p $(dirname $jobfile)
-    cat >$jobfile
+    job_file="job_files/job_file.$timestamp.$job_name.$job_label.txt"
+    mkdir -p $(dirname $job_file)
+    cat >$job_file
 
     # run job
-    ntasks=$(wc -l <$jobfile)
+    ntasks=$(wc -l <$job_file)
     mkdir -p outputs
-    sbatch --ntasks $ntasks --input $jobfile "${sbatch_args[@]}"
+    sbatch --ntasks $ntasks --input $job_file "${sbatch_args[@]}"
     }
 
   else
