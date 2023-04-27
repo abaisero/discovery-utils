@@ -4,15 +4,16 @@
 while read line; do
   line=($line)
 
-  task_id=${line[0]}
-  task_command=${line[@]:1}
+  experiment_id=${line[0]}
+  task_id=${line[1]}
+  task_command=${line[@]:2}
 
-  log_file="task_logs/$task_id.log"
-  mkdir -p $(dirname $log_file)
-  # TODO what is happening here with the line?  why am I not using task_command?
-  srun --ntasks 1 --nodes 1 --exclusive run_task.sh ${line[@]} &>> $log_file &
+  task_path=$(make_task_path.sh $experiment_id $task_id)
+  mkdir -p $task_path
+
+  task_output="$task_path/output.txt"
+
+  srun --ntasks 1 --nodes 1 --exclusive run_task.sh ${line[@]} &>> $task_output &
 done
 
 wait
-
-exit

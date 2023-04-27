@@ -1,21 +1,22 @@
 #!/bin/bash
 
+experiment_id=$1
+shift
 task_id=$1
 shift
-command="$@"
+task_command="$@"
 
 # 1. touch a task_file indicating the task has begun
-# 2. run the command
-# 3. if the command succeeds, touch a task_file indicating the task is done
+# 2. run the task_command
+# 3. if the task_command succeeds, touch a task_file indicating the task is done
 
-task_file_base="task_files/$task_id"
-mkdir -p $(dirname $task_file_base)
+task_path=$(make_task_path.sh $experiment_id $task_id)
 
-touch "$task_file_base.BEGUN"
-$command
+cd $task_path
+
+touch $TASK_BEGUN
+$task_command
 
 if [ $? -eq 0 ]; then
-  touch "$task_file_base.DONE"
+  touch $TASK_DONE
 fi
-
-exit

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import argparse
 import random
+import sys
 import time
 
 
@@ -31,4 +32,4 @@ def main() -> int:
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    sys.exit(main())

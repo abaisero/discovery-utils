@@ -3,17 +3,17 @@
 while read -r line; do
   line=($line)
 
-  task_id=${line[0]}
-  task_command=${line[@]:1}
+  experiment_id=${line[0]}
+  task_id=${line[1]}
+  task_command=${line[@]:2}
 
-  task_file_start="task_file/$task_id.BEGUN"
-  task_file_done="task_file/$task_id.DONE"
+  task_path=$(make_task_path.sh $experiment_id $task_id)
+  task_file_begun="$task_path/$TASK_BEGUN"
+  task_file_done="$task_path/$TASK_DONE"
 
   # filter task if the task is registered as DONE
   if [[ ! -f "$task_file_done" ]]; then
-    echo $experiment_i $task_id $task_command
+    echo "${line[@]}"
   fi
 
 done
-
-exit

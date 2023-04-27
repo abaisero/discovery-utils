@@ -1,9 +1,8 @@
 #!/bin/bash
 
-#SBATCH --output outputs/slurm.%x.%j.out
 #SBATCH --partition short
 #SBATCH --time 24:00:00
-#SBATCH --signal USR1@900
+#SBATCH --signal TERM@1800
 # setup your sbatch options here, e.g. edit the lines above, or add others
 
 # setup other necessary code here, e.g., signal handling
