@@ -36,8 +36,8 @@ while true; do
     done
     } | {
     # save chunk of tasks into a job_file
-    job_label="job=$(printf "%03d" $job_idx)"
-    job_file="job_files/job_file.$timestamp.$job_name.$job_label.txt"
+    job_id="job=$(printf "%03d" $job_idx)"
+    job_file="jobs/$timestamp.$job_id.txt"
     mkdir -p $(dirname $job_file)
     cat >$job_file
 
@@ -53,5 +53,3 @@ while true; do
   fi
 
 done
-
-exit 0

@@ -14,5 +14,3 @@ while read line; do
 done
 
 wait
-
-exit

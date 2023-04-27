@@ -17,5 +17,3 @@ $command
 if [ $? -eq 0 ]; then
   touch "$task_file_base.DONE"
 fi
-
-exit
