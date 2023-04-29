@@ -4,8 +4,10 @@
 job_ids=$(squeue -u $USER -t RUNNING,PENDING --noheader --format="%i" | paste -sd: -)
 
 sbatch_args=(
+  --partition short
+  --time 24:00:00
   --job-name=wandb-log
-  --output=wandb-log-sbatch.out
+  --output=wandb-log.out
   --dependency=singleton,afterany:$job_ids 
 )
 
