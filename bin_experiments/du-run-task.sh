@@ -4,19 +4,21 @@ experiment_id=$1
 shift
 task_id=$1
 shift
-task_command="$@"
+task_command="$*"
 
 # 1. touch a task_file indicating the task has begun
 # 2. run the task_command
 # 3. if the task_command succeeds, touch a task_file indicating the task is done
 
-task_path=$(make_task_path.sh $experiment_id $task_id)
+task_path=$(make-path.py task "$experiment_id" "$task_id")
 
-cd $task_path
+(
+  cd "$task_path" || exit 1
 
-touch $TASK_BEGUN
-$task_command
+  touch "$TASK_BEGUN"
+  $task_command
 
-if [ $? -eq 0 ]; then
-  touch $TASK_DONE
-fi
+  if $task_command; then
+    touch "$TASK_DONE"
+  fi
+)

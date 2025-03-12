@@ -10,19 +10,13 @@ num_tasks_per_job=$1
 shift
 sbatch_args=("$@")
 
-num_tasks_per_job_minus_1=$(($num_tasks_per_job - 1))
+num_tasks_per_job_minus_1=$((num_tasks_per_job - 1))
 timestamp=$(date +%F.%T.%N)
-
-# get job_name if possible
-job_name=no-job-name
-if echo "${sbatch_args[@]}" | grep -q -- --job-name; then
-  job_name=$(echo "${sbatch_args[@]}" | sed -E 's/^.*--job-name (\w+).*$/\1/')
-fi
 
 # split standard input into chunks
 job_idx=-1
 while true; do
-  job_idx=$(($job_idx + 1))
+  job_idx=$((job_idx + 1))
 
   if read -r line; then
     {
@@ -41,21 +35,21 @@ while true; do
     # save chunk of tasks into a job_file
     job_id="job=$(printf "%03d" $job_idx)"
     # job_path="jobs/$timestamp.$job_id"
-    job_path=$(make_job_path.sh $experiment_id $timestamp $job_id)
-    mkdir -p $job_path
+    job_path=$(du-make-path.py job "$experiment_id" "$timestamp" "$job_id")
+    mkdir -p "$job_path"
 
     job_input="$job_path/input.txt"
     job_output="$job_path/output.txt"
     job_error="$job_path/error.txt"
-    cat >$job_input
+    cat >"$job_input"
 
     # run job
-    ntasks=$(wc -l <$job_input)
+    ntasks=$(wc -l <"$job_input")
     sbatch \
-      --ntasks $ntasks \
-      --input $job_input \
-      --output $job_output \
-      --error $job_error \
+      --ntasks "$ntasks" \
+      --input "$job_input" \
+      --output "$job_output" \
+      --error "$job_error" \
       "${sbatch_args[@]}"
     }
 

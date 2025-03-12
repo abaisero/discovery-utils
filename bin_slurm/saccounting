@@ -2,5 +2,5 @@
 
 # custom format
 # | tabulation
-command sacct -o 'JobID,JobName,CPUTime,Elapsed,State,NCPUS' -P $@ \
+command sacct -o 'JobID,JobName,CPUTime,Elapsed,State,NCPUS' -P "$@" \
   | column -t -s \|

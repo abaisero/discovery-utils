@@ -1,7 +1,7 @@
 #!/bin/bash
 
 filepath=$(readlink -f "${BASH_SOURCE:-$0}")
-dirpath=$(dirname $filepath)
+dirpath=$(dirname "$filepath")
 
 export PATH="$dirpath/bin_slurm:$PATH"
 export PATH="$dirpath/bin_experiments:$PATH"

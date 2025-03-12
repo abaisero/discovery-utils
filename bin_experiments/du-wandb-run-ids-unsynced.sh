@@ -8,9 +8,9 @@ fi
 path=$1
 shift
 
-for runfile in $(find "$path" -name 'run-*.wandb'); do
+find "$path" -name 'run-*.wandb' | while read -r runfile; do
   if [ ! -f "$runfile.synced" ]; then
-    echo $runfile
+    echo "$runfile"
   fi
 done \
   | xargs --no-run-if-empty basename --multiple --suffix .wandb \
