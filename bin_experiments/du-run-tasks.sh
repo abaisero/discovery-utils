@@ -5,7 +5,7 @@ while read -r -a line; do
   task_id=${line[1]}
   # task_command=${line[@]:2}
 
-  task_path=$(make-path.py task "$experiment_id" "$task_id")
+  task_path=$(du-make-path.py task "$experiment_id" "$task_id")
   mkdir -p "$task_path"
 
   task_output="$task_path/output.txt"
