@@ -10,7 +10,7 @@ while read -r -a line; do
 
   task_output="$task_path/output.txt"
 
-  srun --ntasks 1 --nodes 1 --exclusive run_task.sh "${line[@]}" &>> "$task_output" &
+  srun --ntasks 1 --nodes 1 --exclusive du-run-task.sh "${line[@]}" &>> "$task_output" &
 done
 
 wait
