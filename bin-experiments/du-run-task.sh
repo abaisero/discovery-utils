@@ -16,7 +16,7 @@ task_path=$(du-make-path.py task "$experiment_id" "$task_id")
   cd "$task_path" || exit 1
 
   touch "$TASK_BEGUN"
-  $task_command
+  echo "RUNNING $task_command"
 
   if $task_command; then
     touch "$TASK_DONE"
